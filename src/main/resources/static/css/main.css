@@ -1,0 +1,233 @@
+    .body {
+      padding: 40px 100px;
+      text-align: center;
+    }
+
+    .body .title h1 {
+      font-size: 36px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .body .title h4 {
+      font-size: 18px;
+      font-weight: normal;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    /* ===== NÚT THAM GIA THI ===== */
+    .btn {
+      display: inline-block;
+      background-color: #6f42c1; /* tím */
+      color: #fff;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #563d7c;
+      transform: translateY(-2px);
+    }
+
+    /* ----- IMAGE ----- */
+    .img img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-top: 30px;
+    }
+
+   
+/* --- Danh sách môn học --- */
+.list {
+  margin-top: 60px;
+  text-align: left;
+}
+
+.list .title h1 {
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: #222;
+}
+
+/* --- Bố cục các môn học --- */
+.sub-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+/* --- Từng card môn học --- */
+.subject {
+  background-color: #f9f9ff;
+  width: 280px;
+  padding: 20px 18px 28px 18px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.subject:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+/* --- Ảnh trong card --- */
+.subject img {
+  width: 100%;
+  height: 180px;
+  border-radius: 12px;
+  object-fit: cover;
+  margin-bottom: 14px;
+}
+
+/* --- Tên & mô tả môn --- */
+.Subject--name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2c1f47;
+  margin-bottom: 6px;
+}
+
+.Subject--decription {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.4;
+  padding: 0 8px;
+}
+    .slider {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      height: 400px;
+      margin: 60px auto;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slide-track {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .slide {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 60%;
+      height: 100%;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.8);
+      transition: all 0.8s ease;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slide.center {
+      opacity: 1;
+      z-index: 3;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .slide.left {
+      opacity: 0.8;
+      transform: translate(-120%, -50%) scale(0.9);
+      z-index: 2;
+    }
+
+    .slide.right {
+      opacity: 0.8;
+      transform: translate(20%, -50%) scale(0.9);
+      z-index: 2;
+    }
+
+    /* ========== MÔN HỌC 2D SLIDER ========== */
+    .list {
+      margin-top: 80px;
+      text-align: center;
+      position: relative;
+    }
+
+    .subject-slider {
+      position: relative;
+      overflow: hidden;
+      width: 90%;
+      max-width: 1100px;
+      margin: 40px auto;
+    }
+
+    .subject-track {
+      display: flex;
+      gap: 30px;
+      transition: transform 0.8s ease-in-out;
+    }
+
+    .subject {
+      min-width: 260px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      padding: 15px;
+      transition: transform 0.3s;
+    }
+
+    .subject:hover {
+      transform: translateY(-5px);
+    }
+
+    .subject img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .Subject--name {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .Subject--decription {
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* Dots */
+    .dots {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin: 5px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .dot.active {
+      background: #6f42c1;
+    }

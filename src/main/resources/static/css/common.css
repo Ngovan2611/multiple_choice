@@ -1,0 +1,55 @@
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+      body {
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom right, #F3E8FF, #FFFFFF);
+    }
+    /* ----- HEADER ----- */
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 80px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    /* Logo */
+    .logo {
+      text-decoration: none; /* bỏ gạch chân */
+      color: inherit; /* giữ nguyên màu chữ */
+      display: inline-block;
+    }
+
+    .logo h1 {
+      font-size: 26px;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .logo span {
+      color: #6f42c1;
+    }
+
+    .menu ul {
+      list-style: none;
+      display: flex;
+      gap: 30px;
+    }
+
+    .menu ul li a {
+      text-decoration: none;
+      color: #000;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .menu ul li a:hover {
+      color: #007bff;
+    }

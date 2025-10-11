@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Đề thi</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/exam.css">
+</head>
+
+<body>
+<header>
+  <a href="/home" class="logo">
+    <h1>Thi<span>Tot</span></h1>
+  </a>
+  <nav class="menu">
+    <ul>
+      <li><a href="/profile">Thông tin cá nhân</a></li>
+      <li><a href="/exam">Đề thi</a></li>
+      <li><a href="/subject">Luyện tập</a></li>
+      <li><a href="/history">Lịch sử thi</a></li>
+      <li th:if="${user != null}"><a href="/logout">Đăng xuất</a></li>
+      <li th:unless="${user != null}"><a href="/login">Đăng nhập</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <h2>Đề thi</h2>
+
+  <div class="exam-container" id="examList">
+    <div class="exam-card" th:each="exam : ${exams}">
+      <p class="exam-title" th:text="${exam.examName}">Tên đề</p>
+      <img class="exam-img" th:src="${exam.subject.imageUrl}" alt="Ảnh môn học">
+      <p class="exam-subject" th:text="${exam.subject.subjectName}">Tên môn</p>
+      <p class="exam-desc" th:text="${exam.description}">Mô tả đề thi</p>
+      <p class="exam-teacher">
+        <strong>Người ra đề:</strong>
+        <span th:text="${exam.createdBy != null ? exam.createdBy.full_name : 'Admin'}"></span>
+      </p>
+
+      <!-- Nút mở popup -->
+      <button class="btn-primary"
+              th:attr="data-id=${exam.examId}, data-name=${exam.examName}, data-time=${exam.duration}, data-count=${exam.totalQuestions}"
+              onclick="openExam(this)">Vào thi</button>
+    </div>
+  </div>
+</main>
+
+<footer>© 2025 ThiTot - Nền tảng thi trắc nghiệm</footer>
+
+<!-- Popup Vào thi -->
+<div class="overlay" id="popupExam">
+  <div class="popup">
+    <button class="close-btn" onclick="closePopup()">✖</button>
+    <h3>Vào Thi</h3>
+    <label>Tên đề thi</label>
+    <input id="examName" readonly>
+    <label>Thời gian làm bài (phút)</label>
+    <input id="examTime" readonly>
+    <label>Số lượng câu hỏi</label>
+    <input id="examCount" readonly>
+    <div class="exam-actions">
+      <a id="startExamLink" class="btn-take-exam">Vào thi</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openExam(btn) {
+    const id = btn.getAttribute('data-id');
+    const name = btn.getAttribute('data-name');
+    const time = btn.getAttribute('data-time');
+    const count = btn.getAttribute('data-count');
+
+    // Gán dữ liệu cho popup
+    document.getElementById('examName').value = name;
+    document.getElementById('examTime').value = time;
+    document.getElementById('examCount').value = count;
+
+    // Gán link động cho nút “Vào thi”
+    const startLink = document.getElementById('startExamLink');
+    startLink.href = `/exam/${id}/take`;
+
+    document.getElementById('popupExam').classList.add('active');
+  }
+
+  function closePopup() {
+    document.getElementById('popupExam').classList.remove('active');
+  }
+</script>
+</body>
+</html>

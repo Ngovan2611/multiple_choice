@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thông tin cá nhân</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+
+<header>
+  <a href="/home" class="logo">
+    <h1>Thi<span>Tot</span></h1>
+  </a>
+  <nav class="menu">
+    <ul>
+      <li><a href="/profile">Thông tin cá nhân</a></li>
+      <li><a href="/exam">Đề thi</a></li>
+      <li><a href="/subject">Luyện tập</a></li>
+      <li><a href="/history">Lịch sử thi</a></li>
+      <li th:if="${user != null}"><a href="/logout">Đăng xuất</a></li>
+      <li th:unless="${user != null}"><a href="/login">Đăng nhập</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- PROFILE -->
+<main class="profile">
+  <div class="info-card">
+    <div class="avatar">👤</div>
+    <div class="text">
+      <h3>Họ và tên</h3>
+      <p th:text="${user.full_name}"></p>
+    </div>
+  </div>
+  <div class="info-card">
+    <div class="avatar">👤</div>
+    <div class="text">
+      <h3>Tên đăng nhập</h3>
+      <p th:text="${user.username}"></p>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="avatar">#</div>
+    <div class="text">
+      <h3>Mã học sinh</h3>
+      <p th:text="${user.id}"></p>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="avatar">🏫</div>
+    <div class="text">
+      <h3>Lớp</h3>
+      <p th:text="${user.className}"></p>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="avatar">📞</div>
+    <div class="text">
+      <h3>Số điện thoại</h3>
+      <p th:text="${user.phone}">0123456789</p>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="avatar">✉️</div>
+    <div class="text">
+      <h3>Email</h3>
+      <p th:text="${user.email}">example@email.com</p>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="avatar">🔒</div>
+    <div class="text">
+      <h3>Mật khẩu</h3>
+      <p>********</p>
+    </div>
+  </div>
+
+  <button class="edit-btn" id="openModal">Chỉnh sửa</button>
+</main>
+
+<!-- MODAL OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <button class="close-btn" id="closeModal">✖</button>
+    <h2>Chỉnh sửa thông tin</h2>
+
+    <form th:action="@{/profile/update}" method="post">
+      <div class="form-item">
+        <div class="avatar">👤</div>
+        <input type="text" name="fullName" th:value="${user.full_name}" placeholder="Họ và Tên">
+      </div>
+      <div class="form-item">
+        <div class="avatar">👤</div>
+        <input type="text" name="username" th:value="${user.username}" placeholder="Tên Đăng Nhập">
+      </div>
+      <div class="form-item">
+        <div class="avatar">#</div>
+        <input type="text" name="studentCode" th:value="${user.id}" placeholder="Mã học sinh" readonly>
+      </div>
+
+      <div class="form-item">
+        <div class="avatar">🏫</div>
+        <input type="text" name="className" th:value="${user.className}" placeholder="Lớp" readonly>
+      </div>
+
+      <div class="form-item">
+        <div class="avatar">📞</div>
+        <input type="text" name="phone" th:value="${user.phone}" placeholder="Số điện thoại">
+      </div>
+
+      <div class="form-item">
+        <div class="avatar">✉️</div>
+        <input type="email" name="email" th:value="${user.email}" placeholder="Email">
+      </div>
+
+      <div class="form-item">
+        <div class="avatar">🔒</div>
+        <input type="password" name="password" placeholder="Mật khẩu mới (để trống nếu không đổi)">
+      </div>
+
+      <div class="modal-buttons">
+        <button type="button" class="btn-cancel" id="cancelModal">Hủy</button>
+        <button type="submit" class="btn-save">Lưu</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<footer>© 2025 ThiTot - Nền tảng thi trắc nghiệm</footer>
+
+<!-- SCRIPT -->
+<script>
+  const openModal = document.getElementById('openModal');
+  const closeModal = document.getElementById('closeModal');
+  const cancelModal = document.getElementById('cancelModal');
+  const overlay = document.getElementById('overlay');
+
+  openModal.addEventListener('click', () => overlay.style.display = 'flex');
+  closeModal.addEventListener('click', () => overlay.style.display = 'none');
+  cancelModal.addEventListener('click', () => overlay.style.display = 'none');
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.style.display = 'none';
+  });
+</script>
+</body>
+</html>

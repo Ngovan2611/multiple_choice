@@ -1,0 +1,174 @@
+   * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+.tittle a:hover {
+    color: #a145d3;
+}
+
+
+h1  {
+    background: transparent;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    border-radius: 40px;
+    width: 450px;
+    text-align: center;
+    transition: 0.5s;
+}
+
+
+body {
+    background: url('/image/color-year-purple-tones-abstract-landscape-with-fantasy-aesthetic.jpg');
+    background-size: cover; /* Phủ toàn bộ màn hình */
+    background-position: center; /* Căn giữa */
+    background-repeat: no-repeat; /* Không lặp */
+    height: 100vh; /* Chiều cao bằng toàn màn hình */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.tittle {
+    position: absolute;
+    top: 40px; 
+    left: 50%;
+    transform: translateX(-50%);
+    color: white; 
+    font-size: 36px;
+    font-weight: bold;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+#wrapper {
+    width: 500px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: rgb(0, 0, 0);
+    border-radius: 40px;
+    padding: 30px 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(20px);
+}
+
+#wrapper h2 {
+    text-align: center;
+    font-size: 36px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+}
+
+#wrapper .input-box {
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+    position: relative;
+}
+
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius:40px ;
+    font-size: 16px;
+    color: #000000;
+    padding: 20px 45px 20px 20px;
+}
+
+
+.input-box input::placeholder{
+    color: rgb(0, 0, 0);
+}
+
+.input-box i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+#wrapper .remember-fogot {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 15px;
+}
+
+.remember-fogot label input {
+    accent-color:  #000000;
+    margin-right: 3px;
+}
+.remember-fogot a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.remember-fogot a:hover {
+    text-decoration: underline;
+    color: #000;
+}
+
+#wrapper .btn {
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+    transition: 1s ease;
+}
+
+#wrapper .btn:hover {
+    color: rgb(175, 35, 166);
+    transform: translateY(-5%);
+}
+
+#wrapper .register-link {
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+.register-link a{
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+    color: black;
+}
+
+.Login a{
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+}
+.Login {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.Login a:hover {
+    color: #000;
+    text-decoration: underline;
+}

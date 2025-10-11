@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title th:text="'Bài thi - ' + ${exam.examName}">Bài thi</title>
+  <link rel="stylesheet" href="/css/common.css" />
+  <style>
+    body {
+      background-color: #faf7ff;
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #222;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 50px;
+    }
+
+    .logo h1 {
+      font-size: 28px;
+      color: #6f42c1;
+    }
+
+    .logo span {
+      color: #b28dff;
+    }
+
+    .exit-btn {
+      background: #f3ebff;
+      color: #6f42c1;
+      border: 1px solid #d5baff;
+      border-radius: 25px;
+      padding: 6px 18px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .exit-btn:hover {
+      background: #e5d4ff;
+    }
+
+    /* Header bài thi */
+    .exam-header {
+      text-align: center;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    .exam-header h2 {
+      font-size: 28px;
+      margin: 5px 0;
+    }
+
+    .exam-desc {
+      font-size: 15px;
+      color: #555;
+    }
+
+    .timer {
+      position: absolute;
+      top: 0;
+      right: 50px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    /* Nội dung bài thi */
+    .exam-content {
+      background-color: #f8f0ff;
+      border-radius: 15px;
+      padding: 40px 60px;
+      margin: 30px auto;
+      max-width: 900px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .question {
+      margin-bottom: 40px;
+    }
+
+    .question h4 {
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
+
+    .answers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px 40px;
+    }
+
+    .answers label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .answers input[type="checkbox"] {
+      accent-color: #6f42c1;
+      transform: scale(1.1);
+    }
+
+    .question img {
+      max-width: 300px;
+      display: block;
+      margin: 10px 0;
+      border-radius: 6px;
+    }
+
+    /* Nút nộp bài */
+    .submit-btn {
+      display: block;
+      margin: 30px auto 0;
+      background-color: #6f42c1;
+      color: #fff;
+      border: none;
+      padding: 10px 40px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #5a32a3;
+    }
+
+    footer {
+      background-color: #000;
+      height: 60px;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <a href="/home" class="logo">
+    <h1>Thi<span>Tot</span></h1>
+  </a>
+  <button class="exit-btn" onclick="confirmExit()">⎋ Thoát</button>
+</header>
+
+<section class="exam-header">
+  <h2 th:text="${exam.examName}">Môn thi</h2>
+  <p class="exam-desc" th:text="${exam.description}">Mô tả đề thi</p>
+  <div class="timer" id="timer" th:text="${exam.duration + ':00'}">45:00</div>
+</section>
+
+<!-- Form bài làm -->
+<form th:action="@{/exam/{examId}/submit(examId=${exam.examId})}" method="post" class="exam-content">
+  <input type="hidden" name="examId" th:value="${exam.examId}" />
+
+  <div th:each="question, qStat : ${questions}" class="question">
+    <h4>
+      Câu [[${qStat.index + 1}]]: [[${question.questionText}]]
+    </h4>
+
+    <div class="answers">
+      <label>
+        <input type="radio" th:name="'answers_' + ${question.questionId}" value="A">
+        <span th:text="${answers[question.questionId].answerA}"></span>
+      </label>
+      <label>
+        <input type="radio" th:name="'answers_' + ${question.questionId}" value="B">
+        <span th:text="${answers[question.questionId].answerB}"></span>
+      </label>
+      <label>
+        <input type="radio" th:name="'answers_' + ${question.questionId}" value="C">
+        <span th:text="${answers[question.questionId].answerC}"></span>
+      </label>
+      <label>
+        <input type="radio" th:name="'answers_' + ${question.questionId}" value="D">
+        <span th:text="${answers[question.questionId].answerD}"></span>
+      </label>
+    </div>
+  </div>
+
+
+
+  <button type="submit" class="submit-btn">📝 Nộp bài</button>
+</form>
+
+<footer></footer>
+
+<script>
+  // ----- Đếm ngược thời gian -----
+  let totalSeconds = /*[[${exam.duration}]]*/45 * 60; // Thymeleaf inline
+  const timerEl = document.getElementById("timer");
+
+  function updateTimer() {
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    timerEl.textContent = String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
+    if (totalSeconds > 0) totalSeconds--;
+    else document.querySelector("form").submit();
+  }
+  setInterval(updateTimer, 1000);
+
+  function confirmExit() {
+    if (confirm("Bạn có chắc muốn thoát? Bài làm chưa nộp sẽ bị mất.")) {
+      window.location.href = "/exam";
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lịch sử thi - Thi Tot</title>
+  <link rel="stylesheet" href="/css/common.css" />
+
+  <style>
+
+
+    /* Thông tin học sinh */
+    .profile-section {
+      border: 2px dashed #b28dff;
+      border-radius: 12px;
+      margin: 40px auto;
+      padding: 25px 40px;
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      width: 75%;
+      background-color: #f9f6ff;
+    }
+
+    .profile-img {
+      width: 120px;
+      height: 100px;
+      background-color: #e9dbff;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .profile-info p {
+      margin: 6px 0;
+      font-size: 16px;
+    }
+
+    /* Bảng lịch sử thi */
+    .history-table {
+      width: 80%;
+      margin: 20px auto 60px;
+      background-color: #f9f6ff;
+      border-radius: 12px;
+      padding: 25px 30px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    th, td {
+      padding: 14px 10px;
+      border-bottom: 1px solid #e0ccff;
+    }
+
+    th {
+      color: #6f42c1;
+      font-weight: 600;
+      border-bottom: 2px solid #b28dff;
+    }
+
+    tr:hover {
+      background-color: #f2e9ff;
+    }
+
+    footer {
+      background-color: #000;
+      height: 60px;
+      color: #fff;
+      text-align: center;
+      line-height: 60px;
+    }
+    .link:hover{
+      color: #5a32a3;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <a href="/home" class="logo">
+    <h1>Thi<span>Tot</span></h1>
+  </a>
+  <nav class="menu">
+    <ul>
+      <li><a href="/profile">Thông tin cá nhân</a></li>
+      <li><a href="/exam">Đề thi</a></li>
+      <li><a href="/subject">Luyện tập</a></li>
+      <li><a href="/history">Lịch sử thi</a></li>
+      <li th:if="${user != null}"><a href="/logout">Đăng xuất</a></li>
+      <li th:unless="${user != null}"><a href="/login">Đăng nhập</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- THÔNG TIN HỌC SINH -->
+<section class="profile-section">
+  <div class="profile-img">
+    <img src="/images/avatar.png" alt="avatar" style="width:60px;height:60px;opacity:0.5;" />
+  </div>
+  <div class="profile-info">
+    <p><strong>Họ và Tên:</strong> <span th:text="${user.full_name}"></span></p>
+    <p><strong>Lớp:</strong> <span th:text="${user.className}"></span></p>
+    <p><strong>Mã học sinh:</strong> <span th:text="${user.id}"></span></p>
+  </div>
+</section>
+
+<!-- BẢNG LỊCH SỬ THI -->
+<section class="history-table">
+  <table>
+    <thead>
+    <tr>
+      <th>Mã thi</th>
+      <th>Mã môn</th>
+      <th>Tên môn</th>
+      <th>Bài thi</th>
+      <th>Thời gian bắt đầu</th>
+      <th>Thời gian kết thúc</th>
+      <th>Điểm</th>
+      <th>Số câu đúng</th>
+      <th>Số câu sai</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="result : ${results}">
+      <td>
+        <a class="link" th:href="@{'/result/detail/' + ${result.resultId}}"
+           style="text-decoration:none;">
+          <span th:text="${result.resultId}">R001</span>
+        </a>
+      </td>      <td th:text="${result.exam.subject.subjectId}"></td>
+      <td th:text="${result.exam.subject.subjectName}"></td>
+      <td th:text="${result.exam.examName}"></td>
+      <td th:text="${#temporals.format(result.startTime, 'dd/MM/yyyy - HH:mm')}"></td>
+      <td th:text="${#temporals.format(result.endTime, 'dd/MM/yyyy - HH:mm')}"></td>
+      <td th:text="${result.score}"></td>
+      <td th:text="${result.correctCount}"></td>
+      <td th:text="${result.incorrectCount}"></td>
+    </tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  &copy; 2025 ThiTot
+</footer>
+</body>
+</html>

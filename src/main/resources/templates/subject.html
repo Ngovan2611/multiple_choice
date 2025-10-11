@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Danh sách môn</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/subject.css">
+</head>
+<body>
+<header>
+  <a href="/home" class="logo">
+    <h1>Thi<span>Tot</span></h1>
+  </a>
+  <nav class="menu">
+    <ul>
+      <li><a href="/profile">Thông tin cá nhân</a></li>
+      <li><a href="/exam">Đề thi</a></li>
+      <li><a href="/subject">Luyện tập</a></li>
+      <li><a href="/history">Lịch sử thi</a></li>
+      <li th:if="${user != null}"><a href="/logout">Đăng xuất</a></li>
+      <li th:unless="${user != null}"><a href="/login">Đăng nhập</a></li>
+    </ul>
+  </nav>
+</header>
+
+  <main>
+    <div class="header-row">
+      <h2>Danh sách môn</h2>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm môn học...">
+        <button id="searchBtn">🔍</button>
+      </div>
+    </div>
+
+    <div class="subject-container" id="subjectList">
+      <!-- Thymeleaf loop -->
+      <div class="subject-card" th:each="sub : ${subjects}">
+        <p class="subject-title" th:text="${sub.subjectName}">Tên môn</p>
+
+        <img class="subject-img"
+             th:src="${sub.imageUrl}"
+             alt="Ảnh môn học"
+            >
+
+        <p class="subject-desc" th:text="${sub.description}">Mô tả môn</p>
+
+        <div class="button-group">
+          <button class="btn btn-outline"
+                  th:attr="data-name=${sub.subjectName}, data-desc=${sub.description}, data-time='45 phút', data-count='40 câu'"
+                  onclick="showDetails(this)">
+            Chi tiết
+          </button>
+
+          <button class="btn btn-primary"
+                  th:attr="data-name=${sub.subjectName}"
+                  onclick="openExam(this)">
+            Vào thi
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+  </main>
+
+  <footer>© 2025 ThiTot - Nền tảng thi trắc nghiệm</footer>
+
+<!-- Popup Vào thi -->
+<div class="overlay" id="popupExam">
+  <div class="popup">
+    <button class="close-btn" onclick="closePopup('popupExam')">✖</button>
+    <h3>Vào Thi</h3>
+    <label>Môn thi</label>
+    <input id="subjectName" readonly>
+    <label>Độ khó</label>
+    <select id="difficulty">
+      <option>Dễ</option>
+      <option>Trung bình</option>
+      <option>Khó</option>
+    </select>
+    <label>Số lượng câu hỏi</label>
+    <select id="questionCount">
+      <option>40</option>
+      <option>50</option>
+      <option>60</option>
+    </select>
+    <button class="submit" onclick="submitExam()">Lưu</button>
+  </div>
+</div>
+
+<!-- Popup Chi tiết -->
+<div class="overlay" id="popupDetails">
+  <div class="popup popup-details">
+    <button class="close-btn" onclick="closePopup('popupDetails')">✖</button>
+    <h3>Chi tiết môn học</h3>
+    <p><strong>Tên môn:</strong> <span id="detailName"></span></p>
+    <p><strong>Mô tả:</strong> <span id="detailDesc"></span></p>
+    <p><strong>Thời gian làm bài:</strong> <span id="detailTime"></span></p>
+    <p><strong>Số lượng câu hỏi:</strong> <span id="detailCount"></span></p>
+  </div>
+</div>
+
+<script>
+  const searchInput = document.getElementById("searchInput");
+  const searchBtn = document.getElementById("searchBtn");
+  const subjectCards = Array.from(document.querySelectorAll(".subject-card"));
+
+  // Tìm kiếm
+  function searchSubjects() {
+    const keyword = searchInput.value.trim().toLowerCase();
+    subjectCards.forEach(card => {
+      const title = card.querySelector(".subject-title").innerText.toLowerCase();
+      card.style.display = title.includes(keyword) ? "block" : "none";
+    });
+  }
+
+  searchBtn.addEventListener("click", searchSubjects);
+  searchInput.addEventListener("input", searchSubjects);
+
+  // Popup Chi tiết
+  function showDetails(btn) {
+    document.getElementById('detailName').innerText = btn.getAttribute('data-name');
+    document.getElementById('detailDesc').innerText = btn.getAttribute('data-desc');
+    document.getElementById('detailTime').innerText = btn.getAttribute('data-time');
+    document.getElementById('detailCount').innerText = btn.getAttribute('data-count');
+    document.getElementById('popupDetails').classList.add('active');
+  }
+
+  // Popup Vào thi
+  function openExam(btn) {
+    document.getElementById('subjectName').value = btn.getAttribute('data-name');
+    document.getElementById('popupExam').classList.add('active');
+  }
+
+  function closePopup(id) {
+    document.getElementById(id).classList.remove('active');
+  }
+
+  function submitExam() {
+    const subject = document.getElementById('subjectName').value;
+    const difficulty = document.getElementById('difficulty').value;
+    const questionCount = document.getElementById('questionCount').value;
+    alert(`Bắt đầu thi môn ${subject}\nĐộ khó: ${difficulty}\nSố câu hỏi: ${questionCount}`);
+    closePopup('popupExam');
+  }
+</script>
+</body>
+</html>

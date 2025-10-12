@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Không tìm thấy đề thi</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f8f3ff;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .error-box {
+            background: #fff;
+            padding: 40px 60px;
+            border-radius: 20px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            max-width: 500px;
+        }
+
+        .error-icon {
+            font-size: 50px;
+            color: #a14ef4;
+            margin-bottom: 15px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 25px;
+        }
+
+        .btn-back {
+            background-color: #6f42c1;
+            color: #fff;
+            padding: 10px 30px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #563d7c;
+        }
+    </style>
+</head>
+
+<body>
+<div class="error-box">
+    <div class="error-icon">⚠️</div>
+    <h2>Không tìm thấy đề thi phù hợp</h2>
+    <p>
+        Không có đề nào cho môn
+        <strong th:text="${subjectName}"></strong>,
+        độ khó <strong th:text="${difficulty}"></strong>,
+        <span th:text="${questionCount}"></span> câu hỏi.
+    </p>
+    <button class="btn-back" onclick="window.location.href='/subject'">Quay lại</button>
+</div>
+</body>
+</html>

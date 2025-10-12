@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,9 @@ public class ExamController {
     @GetMapping("/exam")
     public String exam(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("user", user);
 
         List<Exam> exams = examService.getExamByCreateBy();
@@ -57,7 +61,6 @@ public class ExamController {
         List<Question> questions = questionService.getAllQuestionsByExam_Id(id);
         model.addAttribute("questions", questions);
 
-        // Map để lưu đáp án tương ứng từng câu hỏi
         Map<Integer, Answer> answersMap = new HashMap<>();
 
         for (Question q : questions) {
@@ -67,9 +70,45 @@ public class ExamController {
             }
         }
 
-// Gửi xuống giao diện Thymeleaf
         model.addAttribute("answers", answersMap);
 
         return "exam-take";
     }
+    @GetMapping("/start")
+    public String startExam(
+            @RequestParam("subjectId") Integer subjectId,
+            @RequestParam("difficulty") String difficulty,
+            @RequestParam("count") int questionCount,
+            Model model) {
+
+        Exam exam = examService.getRandomExamBySubjectAndQuestions(subjectId, questionCount);
+
+        if (exam == null) {
+            model.addAttribute("message", "Không tìm thấy đề thi phù hợp!");
+            return "exam-notfound";
+        }
+
+        List<Question> questions = questionService.getAllQuestionsByExam_Id(exam.getExamId());
+
+        if (questions == null || questions.isEmpty()) {
+            model.addAttribute("message", "Đề thi chưa có câu hỏi!");
+            return "exam-notfound";
+        }
+
+        Map<Integer, Answer> answersMap = new HashMap<>();
+        for (Question q : questions) {
+            Answer ans = answerService.getAnswerByQuestionId(q.getQuestionId());
+            if (ans != null) {
+                answersMap.put(q.getQuestionId(), ans);
+            }
+        }
+
+        model.addAttribute("exam", exam);
+        model.addAttribute("questions", questions);
+        model.addAttribute("answers", answersMap);
+        model.addAttribute("difficulty", difficulty);
+
+        return "exam-take";
+    }
+
 }

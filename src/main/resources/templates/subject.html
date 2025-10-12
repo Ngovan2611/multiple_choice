@@ -6,7 +6,9 @@
   <title>Danh sách môn</title>
   <link rel="stylesheet" href="/css/common.css">
   <link rel="stylesheet" href="/css/subject.css">
+
 </head>
+
 <body>
 <header>
   <a href="/home" class="logo">
@@ -24,68 +26,69 @@
   </nav>
 </header>
 
-  <main>
-    <div class="header-row">
-      <h2>Danh sách môn</h2>
-      <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Tìm kiếm môn học...">
-        <button id="searchBtn">🔍</button>
+<main>
+  <div class="header-row">
+    <h2>Danh sách môn</h2>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Tìm kiếm môn học...">
+      <button id="searchBtn">🔍</button>
+    </div>
+  </div>
+
+  <div class="subject-container" id="subjectList">
+    <!-- Thymeleaf loop -->
+    <div class="subject-card" th:each="sub : ${subjects}">
+      <p class="subject-title" th:text="${sub.subjectName}">Tên môn</p>
+
+      <img class="subject-img"
+           th:src="${sub.imageUrl}"
+           alt="Ảnh môn học">
+
+      <p class="subject-desc" th:text="${sub.description}">Mô tả môn</p>
+
+      <div class="button-group">
+        <button class="btn btn-outline"
+                th:attr="data-name=${sub.subjectName}, data-desc=${sub.description}"
+                onclick="showDetails(this)">
+          Chi tiết
+        </button>
+
+        <!-- ✅ thêm data-id -->
+        <button class="btn btn-primary"
+                th:attr="data-id=${sub.subjectId}, data-name=${sub.subjectName}"
+                onclick="openExam(this)">
+          Vào thi
+        </button>
       </div>
     </div>
+  </div>
+</main>
 
-    <div class="subject-container" id="subjectList">
-      <!-- Thymeleaf loop -->
-      <div class="subject-card" th:each="sub : ${subjects}">
-        <p class="subject-title" th:text="${sub.subjectName}">Tên môn</p>
-
-        <img class="subject-img"
-             th:src="${sub.imageUrl}"
-             alt="Ảnh môn học"
-            >
-
-        <p class="subject-desc" th:text="${sub.description}">Mô tả môn</p>
-
-        <div class="button-group">
-          <button class="btn btn-outline"
-                  th:attr="data-name=${sub.subjectName}, data-desc=${sub.description}, data-time='45 phút', data-count='40 câu'"
-                  onclick="showDetails(this)">
-            Chi tiết
-          </button>
-
-          <button class="btn btn-primary"
-                  th:attr="data-name=${sub.subjectName}"
-                  onclick="openExam(this)">
-            Vào thi
-          </button>
-        </div>
-      </div>
-    </div>
-
-
-  </main>
-
-  <footer>© 2025 ThiTot - Nền tảng thi trắc nghiệm</footer>
+<footer>© 2025 ThiTot - Nền tảng thi trắc nghiệm</footer>
 
 <!-- Popup Vào thi -->
 <div class="overlay" id="popupExam">
   <div class="popup">
     <button class="close-btn" onclick="closePopup('popupExam')">✖</button>
     <h3>Vào Thi</h3>
+
+    <!-- Ẩn ID môn thi -->
+    <input type="hidden" id="subjectId">
+
     <label>Môn thi</label>
     <input id="subjectName" readonly>
+
     <label>Độ khó</label>
     <select id="difficulty">
-      <option>Dễ</option>
-      <option>Trung bình</option>
-      <option>Khó</option>
+      <option value="Dễ">Dễ</option>
+      <option value="Trung bình">Trung bình</option>
+      <option value="Khó">Khó</option>
     </select>
+
     <label>Số lượng câu hỏi</label>
-    <select id="questionCount">
-      <option>40</option>
-      <option>50</option>
-      <option>60</option>
-    </select>
-    <button class="submit" onclick="submitExam()">Lưu</button>
+    <input id="questionCount" readonly>
+
+    <button class="submit" onclick="submitExam()">Vào thi</button>
   </div>
 </div>
 
@@ -94,42 +97,88 @@
   <div class="popup popup-details">
     <button class="close-btn" onclick="closePopup('popupDetails')">✖</button>
     <h3>Chi tiết môn học</h3>
+
     <p><strong>Tên môn:</strong> <span id="detailName"></span></p>
     <p><strong>Mô tả:</strong> <span id="detailDesc"></span></p>
-    <p><strong>Thời gian làm bài:</strong> <span id="detailTime"></span></p>
-    <p><strong>Số lượng câu hỏi:</strong> <span id="detailCount"></span></p>
+
+    <table class="difficulty-table">
+      <thead>
+      <tr>
+        <th>Độ khó</th>
+        <th>Số lượng câu hỏi</th>
+        <th>Thời gian làm bài</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Dễ</td>
+        <td>40 câu</td>
+        <td>60 phút</td>
+      </tr>
+      <tr>
+        <td>Trung bình</td>
+        <td>50 câu</td>
+        <td>90 phút</td>
+      </tr>
+      <tr>
+        <td>Khó</td>
+        <td>60 câu</td>
+        <td>120 phút</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
 <script>
+  // ----- Tìm kiếm -----
   const searchInput = document.getElementById("searchInput");
   const searchBtn = document.getElementById("searchBtn");
+  const subjectList = document.getElementById("subjectList");
   const subjectCards = Array.from(document.querySelectorAll(".subject-card"));
 
-  // Tìm kiếm
+  const noDataDiv = document.createElement("div");
+  noDataDiv.textContent = "Không có dữ liệu phù hợp";
+  noDataDiv.style.textAlign = "center";
+  noDataDiv.style.fontSize = "18px";
+  noDataDiv.style.color = "#666";
+  noDataDiv.style.padding = "40px 0";
+  noDataDiv.style.display = "none";
+  subjectList.appendChild(noDataDiv);
+
   function searchSubjects() {
     const keyword = searchInput.value.trim().toLowerCase();
+    let visibleCount = 0;
+
     subjectCards.forEach(card => {
       const title = card.querySelector(".subject-title").innerText.toLowerCase();
-      card.style.display = title.includes(keyword) ? "block" : "none";
+      const match = title.includes(keyword);
+      card.style.display = match ? "block" : "none";
+      if (match) visibleCount++;
     });
+
+    noDataDiv.style.display = visibleCount === 0 ? "block" : "none";
   }
 
   searchBtn.addEventListener("click", searchSubjects);
   searchInput.addEventListener("input", searchSubjects);
 
-  // Popup Chi tiết
+  // ----- Popup Chi tiết -----
   function showDetails(btn) {
     document.getElementById('detailName').innerText = btn.getAttribute('data-name');
     document.getElementById('detailDesc').innerText = btn.getAttribute('data-desc');
-    document.getElementById('detailTime').innerText = btn.getAttribute('data-time');
-    document.getElementById('detailCount').innerText = btn.getAttribute('data-count');
     document.getElementById('popupDetails').classList.add('active');
   }
 
-  // Popup Vào thi
+  // ----- Popup Vào thi -----
+  const difficultySelect = document.getElementById("difficulty");
+  const questionCountInput = document.getElementById("questionCount");
+
   function openExam(btn) {
+    document.getElementById('subjectId').value = btn.getAttribute('data-id');
     document.getElementById('subjectName').value = btn.getAttribute('data-name');
+    difficultySelect.value = "Dễ";
+    questionCountInput.value = "40";
     document.getElementById('popupExam').classList.add('active');
   }
 
@@ -137,13 +186,36 @@
     document.getElementById(id).classList.remove('active');
   }
 
+  difficultySelect.addEventListener("change", () => {
+    switch (difficultySelect.value) {
+      case "Dễ":
+        questionCountInput.value = "40";
+        break;
+      case "Trung bình":
+        questionCountInput.value = "50";
+        break;
+      case "Khó":
+        questionCountInput.value = "60";
+        break;
+    }
+  });
+
+  // ----- Khi ấn “Vào thi” -----
   function submitExam() {
-    const subject = document.getElementById('subjectName').value;
+    const subjectId = document.getElementById('subjectId').value;
     const difficulty = document.getElementById('difficulty').value;
     const questionCount = document.getElementById('questionCount').value;
-    alert(`Bắt đầu thi môn ${subject}\nĐộ khó: ${difficulty}\nSố câu hỏi: ${questionCount}`);
-    closePopup('popupExam');
+
+    if (!subjectId) {
+      alert("Không xác định được môn thi!");
+      return;
+    }
+
+    // ✅ Chuyển hướng đúng format cho controller
+    const url = `/start?subjectId=${subjectId}&difficulty=${encodeURIComponent(difficulty)}&count=${encodeURIComponent(questionCount)}`;
+    window.location.href = url;
   }
 </script>
+
 </body>
 </html>

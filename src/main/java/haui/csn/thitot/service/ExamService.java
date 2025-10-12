@@ -15,8 +15,8 @@ import java.util.Optional;
 public class ExamService {
     @Autowired
     private ExamRepository examRepository;
-    public List<Exam> getExamBySubjectAndTotalQuestions(Subject subject, Integer totalQuestions) {
-        return examRepository.findBySubjectAndTotalQuestions(subject, totalQuestions);
+    public Exam getRandomExamBySubjectAndQuestions(Integer subjectId, int questionCount) {
+        return examRepository.findRandomExamBySubjectAndQuestions(subjectId, questionCount);
     }
 
     public List<Exam> getExamByCreateBy() {
@@ -24,5 +24,8 @@ public class ExamService {
     }
     public Exam getExamById(Integer id) {
         return examRepository.findById(id).get();
+    }
+    public Exam getExamByResultId(Integer resultId) {
+        return examRepository.findExamByResultId(resultId);
     }
 }

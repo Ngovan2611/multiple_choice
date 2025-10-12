@@ -188,11 +188,10 @@
   <button type="submit" class="submit-btn">📝 Nộp bài</button>
 </form>
 
-<footer></footer>
-
-<script>
+<footer>© 2025 ThiTot - Nền tảng thi trắc nghiệm</footer>
+<script th:inline="javascript">
   // ----- Đếm ngược thời gian -----
-  let totalSeconds = /*[[${exam.duration}]]*/45 * 60; // Thymeleaf inline
+  let totalSeconds = [[${exam.duration}]] * 60; // exam.duration là số phút
   const timerEl = document.getElementById("timer");
 
   function updateTimer() {
@@ -200,15 +199,44 @@
     const s = totalSeconds % 60;
     timerEl.textContent = String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
     if (totalSeconds > 0) totalSeconds--;
-    else document.querySelector("form").submit();
+    else submitExam(true); // hết giờ -> tự động nộp
   }
   setInterval(updateTimer, 1000);
 
+  // ----- Xác nhận thoát -----
   function confirmExit() {
-    if (confirm("Bạn có chắc muốn thoát? Bài làm chưa nộp sẽ bị mất.")) {
+    if (confirm("⚠️ Bạn có chắc muốn thoát? Bài làm chưa nộp sẽ bị mất.")) {
       window.location.href = "/exam";
     }
   }
+
+  // ----- Xử lý khi nhấn Nộp bài -----
+  const form = document.querySelector("form");
+  const submitBtn = document.querySelector(".submit-btn");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault(); // chặn nộp mặc định
+    submitExam();
+  });
+
+  function submitExam(auto = false) {
+    if (!auto) {
+      const confirmSubmit = confirm("📤 Bạn có chắc muốn nộp bài không?");
+      if (!confirmSubmit) return;
+    }
+
+    // Vô hiệu hoá nút nộp sau khi gửi
+    submitBtn.disabled = true;
+    submitBtn.style.backgroundColor = "#ccc";
+    submitBtn.textContent = "Đang nộp...";
+
+    // Giả lập thông báo sau khi nộp (trước khi redirect)
+    alert("✅ Bài thi đã được nộp thành công!");
+
+    // Gửi form thực sự
+    form.submit();
+  }
 </script>
+
 </body>
 </html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết bài thi - Thi Tot</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/history_detail.css">
+</head>
+<body>
+<header>
+    <a href="/" class="logo"><h1>Thi<span>Tot</span></h1></a>
+    <nav class="menu">
+        <ul>
+            <li><a href="/profile">Thông tin cá nhân</a></li>
+            <li><a href="/exam">Đề thi</a></li>
+            <li><a href="/subject">Luyện tập</a></li>
+            <li><a href="/history">Lịch sử thi</a></li>
+            <li><a href="/logout">Đăng xuất</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section class="exam-detail">
+    <h2 th:text="${exam.examName}"></h2>
+    <p th:text="${exam.description}"></p>
+
+    <table>
+        <thead>
+        <tr>
+            <th>STT</th>
+            <th>Câu hỏi</th>
+            <th>Đáp án A</th>
+            <th>Đáp án B</th>
+            <th>Đáp án C</th>
+            <th>Đáp án D</th>
+            <th>Đáp án đúng</th>
+            <th>Đáp án đã chọn</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="q, iterStat : ${questions}">
+            <td th:text="${iterStat.index + 1}"></td>
+            <td th:text="${q.questionText}"></td>
+            <td th:text="${q.answer.answerA}"></td>
+            <td th:text="${q.answer.answerB}"></td>
+            <td th:text="${q.answer.answerC}"></td>
+            <td th:text="${q.answer.answerD}"></td>
+            <td th:text="${q.answer.isCorrect}"></td>
+
+            <!-- Gắn data-selected-id để JS xử lý -->
+            <td class="selected-answer"
+                th:attr="data-selected-id=${selectedAnswers[q.questionId]}">
+                <!-- nội dung JS sẽ thay -->
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+
+<a href="/history" class="back-btn">← Quay lại lịch sử</a>
+<footer>© 2025 ThiTot - Nền tảng thi trắc nghiệm</footer>
+
+<script>
+    // Chuyển ID đáp án sang A/B/C/D
+    function convertAnswerIdToLetter(id) {
+        switch (String(id)) {
+            case "1": return "A";
+            case "2": return "B";
+            case "3": return "C";
+            case "4": return "D";
+            case "A": case "B": case "C": case "D": return id;
+            default: return "Chưa chọn";
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll(".selected-answer").forEach(cell => {
+            const selectedId = cell.getAttribute("data-selected-id");
+            cell.textContent = convertAnswerIdToLetter(selectedId);
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -1,51 +1,50 @@
-
-
-/* ----- THÔNG TIN CÁ NHÂN ----- */
+/* Thông tin học sinh */
 .profile-section {
-    background-color: #f8f0ff;
     border: 2px dashed #b28dff;
-    border-radius: 10px;
-    margin: 30px 100px;
-    padding: 20px 30px;
+    border-radius: 12px;
+    margin: 40px auto;
+    padding: 25px 40px;
     display: flex;
     align-items: center;
     gap: 30px;
+    width: 75%;
+    background-color: #f9f6ff;
 }
 
 .profile-img {
-    width: 150px;
-    height: 120px;
-    background-color: #e0d2f8;
+    width: 120px;
+    height: 100px;
+    background-color: #e9dbff;
     border-radius: 10px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
 .profile-info p {
-    margin: 8px 0;
+    margin: 6px 0;
     font-size: 16px;
-    color: #333;
 }
 
-/* ----- BẢNG LỊCH SỬ THI ----- */
+/* Bảng lịch sử thi */
 .history-table {
-    background-color: #f8f0ff;
-    border-radius: 10px;
-    margin: 30px 100px;
-    padding: 20px;
+    width: 80%;
+    margin: 20px auto 60px;
+    background-color: #f9f6ff;
+    border-radius: 12px;
+    padding: 25px 30px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    text-align: center;
 }
 
 th, td {
-    padding: 12px 10px;
-    text-align: center;
-    border-bottom: 1px solid #e2d5f7;
-    font-size: 15px;
+    padding: 14px 10px;
+    border-bottom: 1px solid #e0ccff;
 }
 
 th {
@@ -58,9 +57,7 @@ tr:hover {
     background-color: #f2e9ff;
 }
 
-/* ----- FOOTER ----- */
-footer {
-    background-color: #000;
-    height: 60px;
-    margin-top: 40px;
+
+.link:hover{
+    color: #5a32a3;
 }

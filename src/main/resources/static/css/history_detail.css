@@ -1,0 +1,55 @@
+/* ----- BẢNG CHI TIẾT ----- */
+.exam-detail {
+    margin: 40px 100px;
+    background-color: #f8f0ff;
+    border-radius: 10px;
+    padding: 25px 40px;
+}
+
+.exam-detail h2 {
+    color: #6f42c1;
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.exam-detail p {
+    color: #555;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px 10px;
+    text-align: center;
+    border-bottom: 1px solid #e2d5f7;
+    font-size: 15px;
+}
+
+th {
+    color: #6f42c1;
+    font-weight: 600;
+    border-bottom: 2px solid #b28dff;
+}
+
+tr:hover {
+    background-color: #f2e9ff;
+}
+
+/* ----- NÚT QUAY LẠI ----- */
+.back-btn {
+    display: inline-block;
+    margin: 20px 100px;
+    padding: 10px 20px;
+    background-color: #6f42c1;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.back-btn:hover {
+    background-color: #b28dff;
+}

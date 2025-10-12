@@ -1,7 +1,11 @@
 package haui.csn.thitot.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "questions")
 public class Question {
@@ -21,45 +25,15 @@ public class Question {
     @Column(name = "image_url", length = 255)
     private String imageUrl;
 
-    // ===== Constructors =====
+    @OneToOne(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "answer_id")
+    private Answer answer;
+
     public Question() {}
 
     public Question(Exam exam, String questionText, String imageUrl) {
         this.exam = exam;
         this.questionText = questionText;
-        this.imageUrl = imageUrl;
-    }
-
-    // ===== Getters & Setters =====
-    public Integer getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(Integer questionId) {
-        this.questionId = questionId;
-    }
-
-    public Exam getExam() {
-        return exam;
-    }
-
-    public void setExam(Exam exam) {
-        this.exam = exam;
-    }
-
-    public String getQuestionText() {
-        return questionText;
-    }
-
-    public void setQuestionText(String questionText) {
-        this.questionText = questionText;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 }

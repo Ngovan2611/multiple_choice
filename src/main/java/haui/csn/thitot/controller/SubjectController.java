@@ -21,6 +21,10 @@ public class SubjectController {
     @GetMapping("/subject")
     public String subject(HttpSession session, Model model) {
         User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("user", user);
         List<Subject> subjects = subjectService.getAll();
         model.addAttribute("subjects", subjects);

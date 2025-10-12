@@ -1,8 +1,17 @@
 package haui.csn.thitot.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.Date;
+import java.util.List;
+
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "exams")
 public class Exam {
@@ -36,73 +45,7 @@ public class Exam {
     @Column(name = "created_at", updatable = false)
     private Date createdAt = new Date();
 
-    // --- Constructors ---
-    public Exam() {}
 
-    // --- Getter & Setter ---
-
-
-    public Integer getExamId() {
-        return examId;
-    }
-
-    public void setExamId(Integer examId) {
-        this.examId = examId;
-    }
-
-    public Subject getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
-    }
-
-    public String getExamName() {
-        return examName;
-    }
-
-    public void setExamName(String examName) {
-        this.examName = examName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public Integer getTotalQuestions() {
-        return totalQuestions;
-    }
-
-    public void setTotalQuestions(Integer totalQuestions) {
-        this.totalQuestions = totalQuestions;
-    }
-
-    public User getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(User createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
+    @OneToMany(mappedBy = "exam", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Question> questions;
 }

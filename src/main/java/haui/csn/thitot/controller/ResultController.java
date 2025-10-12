@@ -37,6 +37,9 @@ public class ResultController {
     @GetMapping("/history")
     public String history(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
+        if(user == null) {
+            return "redirect:/login";
+        }
         List<Result> results = resultService.getResultsByUser(user);
         model.addAttribute("user", user);
         model.addAttribute("results", results);
@@ -54,15 +57,16 @@ public class ResultController {
 
         Map<Integer, String> userAnswers = new HashMap<>();
         for (Map.Entry<String, String> entry : allParams.entrySet()) {
-            if (entry.getKey().startsWith("answers_")) { // ✅ sửa ở đây
+            if (entry.getKey().startsWith("answers_")) {
                 Integer qId = Integer.valueOf(entry.getKey().replaceAll("[^0-9]", ""));
-                userAnswers.put(qId, entry.getValue());
+                userAnswers.put(qId, entry.getValue()); // Lưu A/B/C/D
             }
         }
 
+        Result result = resultService.gradeExamAndSave(user, examId, userAnswers);
 
-        resultService.gradeExamAndSave(user, examId, userAnswers);
-        return "redirect:/history";
+        return "index";
     }
+
 
 }

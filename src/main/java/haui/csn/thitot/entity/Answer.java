@@ -8,7 +8,14 @@ import jakarta.persistence.Id;
 
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "answers")
 public class Answer {
@@ -18,9 +25,11 @@ public class Answer {
     @Column(name = "answer_id")
     private Integer answerId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @OneToOne
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
+    ;
 
     @Column(name = "is_correct", length = 10)
     private String isCorrect;
@@ -39,65 +48,5 @@ public class Answer {
 
 
 
-    // Constructor không tham số (bắt buộc cho JPA)
-    public Answer() {
-    }
 
-    // Getter và Setter
-
-    public Integer getAnswerId() {
-        return answerId;
-    }
-
-    public void setAnswerId(Integer answerId) {
-        this.answerId = answerId;
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
-
-    public String getAnswerA() {
-        return answerA;
-    }
-
-    public void setAnswerA(String answerA) {
-        this.answerA = answerA;
-    }
-
-    public String getAnswerB() {
-        return answerB;
-    }
-
-    public void setAnswerB(String answerB) {
-        this.answerB = answerB;
-    }
-
-    public String getAnswerC() {
-        return answerC;
-    }
-
-    public void setAnswerC(String answerC) {
-        this.answerC = answerC;
-    }
-
-    public String getAnswerD() {
-        return answerD;
-    }
-
-    public void setAnswerD(String answerD) {
-        this.answerD = answerD;
-    }
-
-    public String getIsCorrect() {
-        return isCorrect;
-    }
-
-    public void setIsCorrect(String isCorrect) {
-        this.isCorrect = isCorrect;
-    }
 }

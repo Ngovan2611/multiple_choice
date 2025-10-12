@@ -53,3 +53,10 @@
     .menu ul li a:hover {
       color: #007bff;
     }
+    footer {
+        background-color: #000;
+        height: 60px;
+        color: #fff;
+        text-align: center;
+        line-height: 60px;
+    }
